@@ -1,76 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AnuragVerse</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Vault | Anurag</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Orbitron', sans-serif;
-      background: url('bg.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #00ffc8;
       scroll-behavior: smooth;
     }
 
-    header {
-      text-align: center;
-      padding: 60px 20px 20px;
-      font-size: 2.5em;
-      letter-spacing: 3px;
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(145deg, #0f0f0f, #1e1e1e);
+      color: white;
+      overflow-x: hidden;
     }
 
-    .vaults {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 40px;
-      padding: 50px 20px;
+    .header {
+      text-align: center;
+      padding: 3rem 1rem;
+      font-size: 2.5rem;
+      font-weight: 600;
+    }
+
+    .vault-container {
+      display: grid;
+      gap: 3rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .vault {
-      border-radius: 15px;
-      padding: 30px;
-      width: 90%;
-      max-width: 600px;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(10px);
-      box-shadow: 0 0 30px rgba(0, 255, 200, 0.2);
-      transition: transform 0.5s ease, box-shadow 0.5s ease;
-    }
-
-    .vault:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 40px rgba(0, 255, 200, 0.5);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      transform: rotateY(90deg);
+      opacity: 0;
+      transition: all 1s ease;
+      transform-style: preserve-3d;
+      animation: themeShift 3s infinite alternate ease-in-out;
     }
 
     .vault h2 {
-      margin-bottom: 15px;
-      font-size: 1.6em;
-      border-bottom: 2px solid #00ffc8;
-      padding-bottom: 10px;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #00ffc8;
     }
 
     .vault p {
-      font-size: 1em;
-      margin-bottom: 15px;
+      font-size: 1rem;
       line-height: 1.5;
+      color: #ccc;
     }
 
     .vault a {
+      display: inline-block;
+      margin-top: 1rem;
       color: #00ffc8;
       text-decoration: none;
       border: 1px solid #00ffc8;
-      padding: 8px 16px;
-      border-radius: 8px;
-      transition: background 0.3s;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: 0.3s;
     }
 
     .vault a:hover {
@@ -78,39 +76,45 @@
       color: #000;
     }
 
-    @media (max-width: 600px) {
-      header {
-        font-size: 2em;
-      }
+    .vault.show {
+      transform: rotateY(0deg);
+      opacity: 1;
+      animation: fadeInUp 1.2s ease forwards, themeShift 3s infinite alternate ease-in-out;
+    }
 
-      .vault {
-        padding: 20px;
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
       }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-      .vault h2 {
-        font-size: 1.4em;
-      }
-
-      .vault p {
-        font-size: 0.95em;
-      }
+    @keyframes themeShift {
+      0%   { background: rgba(255, 255, 255, 0.05); }
+      25%  { background: rgba(0, 255, 200, 0.07); }
+      50%  { background: rgba(255, 255, 255, 0.1); }
+      75%  { background: rgba(0, 200, 255, 0.08); }
+      100% { background: rgba(255, 255, 255, 0.05); }
     }
   </style>
 </head>
 <body>
-  <header>🔒 Project Vault</header>
-
-  <section class="vaults">
+  <div class="header">🧊 Project Vault</div>
+  <div class="vault-container">
     <div class="vault" id="vault1">
-      <h2>Personal Portfolio</h2>
-      <p>A visually enhanced professional site with animations, scroll effects, and smooth transitions.</p>
-      <a href="https://anurvg.github.io" target="_blank">Visit Site</a>
+      <h2>Portfolio</h2>
+      <p>My main cyber-themed personal portfolio site built with elegance and glitch precision.</p>
+      <a href="https://anurvg.github.io/ten.io" target="_blank">Visit Portfolio</a>
     </div>
 
     <div class="vault" id="vault2">
-      <h2>BroTalk App</h2>
-      <p>A teenage mental health chat interface with voice input, smooth UI, and basic AI replies.</p>
-      <a href="#">Coming Soon</a>
+      <h2>Minecraft Themed</h2>
+      <p>A website styled with pixelated aesthetics, inspired by the blocky universe of Minecraft.</p>
+      <a href="https://anurvg.github.io/anuragverse" target="_blank">Visit AnuragVerse</a>
     </div>
 
     <div class="vault" id="vault3">
@@ -118,6 +122,47 @@
       <p>Crafted for chaos and fun — an unpredictable website with surprise elements.</p>
       <a href="https://anurvg.github.io/troll" target="_blank">Visit Troll</a>
     </div>
-  </section>
+
+    <div class="vault" id="vault4">
+      <h2>Demo Project</h2>
+      <p>A basic but clean demo of design structure and minimal aesthetics.</p>
+      <a href="https://anurvg.github.io/demo0" target="_blank">Visit Demo</a>
+    </div>
+
+    <div class="vault" id="vault5">
+      <h2>Random Website</h2>
+      <p>Experimental UI/UX playground. Random thoughts converted into digital design.</p>
+      <a href="https://anurvg.github.io/anrg" target="_blank">Visit Random</a>
+    </div>
+
+    <div class="vault" id="vault6">
+      <h2>काग़ज़ khaab</h2>
+      <p>My poetry collection folder "काग़ज़ khaab: खुद se baatain" presented online with aesthetic intimacy.</p>
+      <a href="https://anurvg.github.io/kaagaz" target="_blank">Visit Kaagaz</a>
+    </div>
+
+    <div class="vault" id="vault7">
+      <h2>BroTalk</h2>
+      <p>My future startup aiming to build strong emotional connections through tech & talk.</p>
+      <a href="https://anurvg.github.io/brotalk" target="_blank">Visit BroTalk</a>
+    </div>
+  </div>
+
+  <script>
+    const vaults = document.querySelectorAll('.vault');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('show');
+          }, i * 300);
+        }
+      });
+    }, {
+      threshold: 0.2
+    });
+
+    vaults.forEach(vault => observer.observe(vault));
+  </script>
 </body>
 </html>
