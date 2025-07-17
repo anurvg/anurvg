@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AnuragVerse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: url('bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #00ffc8;
+      scroll-behavior: smooth;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px 20px;
+      font-size: 2.5em;
+      letter-spacing: 3px;
+    }
+
+    .vaults {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+      padding: 50px 20px;
+    }
+
+    .vault {
+      border-radius: 15px;
+      padding: 30px;
+      width: 90%;
+      max-width: 600px;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 30px rgba(0, 255, 200, 0.2);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .vault:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 40px rgba(0, 255, 200, 0.5);
+    }
+
+    .vault h2 {
+      margin-bottom: 15px;
+      font-size: 1.6em;
+      border-bottom: 2px solid #00ffc8;
+      padding-bottom: 10px;
+    }
+
+    .vault p {
+      font-size: 1em;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+
+    .vault a {
+      color: #00ffc8;
+      text-decoration: none;
+      border: 1px solid #00ffc8;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .vault a:hover {
+      background: #00ffc8;
+      color: #000;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        font-size: 2em;
+      }
+
+      .vault {
+        padding: 20px;
+      }
+
+      .vault h2 {
+        font-size: 1.4em;
+      }
+
+      .vault p {
+        font-size: 0.95em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>🔒 Project Vault</header>
+
+  <section class="vaults">
+    <div class="vault" id="vault1">
+      <h2>Personal Portfolio</h2>
+      <p>A visually enhanced professional site with animations, scroll effects, and smooth transitions.</p>
+      <a href="https://anurvg.github.io" target="_blank">Visit Site</a>
+    </div>
+
+    <div class="vault" id="vault2">
+      <h2>BroTalk App</h2>
+      <p>A teenage mental health chat interface with voice input, smooth UI, and basic AI replies.</p>
+      <a href="#">Coming Soon</a>
+    </div>
+
+    <div class="vault" id="vault3">
+      <h2>Troll Project</h2>
+      <p>Crafted for chaos and fun — an unpredictable website with surprise elements.</p>
+      <a href="https://anurvg.github.io/troll" target="_blank">Visit Troll</a>
+    </div>
+  </section>
+</body>
+</html>
