@@ -1,168 +1,339 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project Vault | Anurag</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Sandbox v5 | Projects</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:linear-gradient(145deg,#0a0f1f,#121829);
+      color:#f0f0f0;
+      overflow-x:hidden;
     }
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(145deg, #0f0f0f, #1e1e1e);
-      color: white;
-      overflow-x: hidden;
+    #progress-bar{
+      position:fixed;top:0;left:0;height:4px;width:0%;
+      background:#5ee0ff;z-index:200;
+      transition:width 0.1s;
     }
 
-    .header {
-      text-align: center;
-      padding: 3rem 1rem;
-      font-size: 2.5rem;
-      font-weight: 600;
+    nav{
+      position:fixed;top:0;left:0;width:100%;
+      background:rgba(10,15,31,0.9);
+      padding:1rem 2rem;
+      display:flex;justify-content:space-between;align-items:center;
+      backdrop-filter:blur(10px);
+      z-index:100;
+    }
+    nav .logo{
+      font-weight:600;font-size:1.5rem;color:#5ee0ff;
+    }
+    .logo .version{
+      font-size:0.7rem;
+      color:#aaa;
+      margin-left:4px;
+      font-weight:400;
+    }
+    nav ul{display:flex;gap:1.5rem;list-style:none;}
+    nav ul li a{
+      text-decoration:none;color:#f0f0f0;transition:.3s;
+    }
+    nav ul li a:hover{color:#5ee0ff;}
+
+    .hero{
+      height:100vh;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;padding:2rem;
+    }
+    .hero h1{
+      font-size:3rem;font-weight:600;
+      background:linear-gradient(to right,#5ee0ff,#a270ff);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      margin-bottom:1rem;
+      opacity:0;transform:translateY(40px);
+    }
+    .hero p{
+      max-width:600px;color:#ccc;font-size:1.2rem;
+      opacity:0;transform:translateY(40px);
     }
 
-    .vault-container {
-      display: grid;
-      gap: 3rem;
-      padding: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
+    .vault-container{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:2rem;
+      max-width:1100px;
+      margin:0 auto;
+      padding:4rem 2rem;
     }
 
-    .vault {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 2rem;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-      transform: rotateY(90deg);
-      opacity: 0;
-      transition: all 1s ease;
-      transform-style: preserve-3d;
-      animation: themeShift 3s infinite alternate ease-in-out;
+    .vault{perspective:1000px;}
+    .vault-inner{
+      position:relative;width:100%;height:250px;
+      transition:transform 0.8s;
+      transform-style:preserve-3d;
+      cursor:pointer;
+    }
+    .vault.flipped .vault-inner{transform:rotateY(180deg);}
+
+    .vault-front,.vault-back{
+      position:absolute;top:0;left:0;width:100%;height:100%;
+      border-radius:15px;backface-visibility:hidden;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:1rem;text-align:center;
+      box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    }
+    .vault-front{
+      background:rgba(255,255,255,0.05);
+      color:#ccc;
+      font-size:1rem;
+      line-height:1.4;
+    }
+    .vault-front strong{
+      display:block;
+      font-size:1.2rem;
+      color:#5ee0ff;
+      margin-bottom:0.5rem;
+    }
+    .vault-back{
+      background:rgba(255,255,255,0.1);
+      transform:rotateY(180deg);
+    }
+    .vault-back h2{
+      font-size:1.3rem;
+      color:#5ee0ff;
+      margin-bottom:1rem;
+    }
+    .vault-back a{
+      display:inline-block;
+      text-decoration:none;
+      background:#5ee0ff;color:#000;
+      padding:.5rem 1rem;border-radius:5px;font-weight:600;
+      transition:0.3s;
+    }
+    .vault-back a:hover{
+      background:#a270ff;color:#fff;
     }
 
-    .vault h2 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      color: #00ffc8;
+    #backTop{
+      position:fixed;bottom:20px;right:20px;
+      background:#5ee0ff;color:#000;border:none;
+      padding:10px 15px;border-radius:50%;
+      font-size:1.2rem;cursor:pointer;
+      display:none;box-shadow:0 0 10px rgba(0,0,0,0.6);
+      transition:all 0.3s;
     }
+    #backTop:hover{background:#a270ff;color:#fff;}
 
-    .vault p {
-      font-size: 1rem;
-      line-height: 1.5;
-      color: #ccc;
+    footer{text-align:center;padding:2rem;color:#888;}
+
+    /* Modal */
+    #modalOverlay{
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);
+      display:none;align-items:center;justify-content:center;
+      z-index:300;
     }
-
-    .vault a {
-      display: inline-block;
-      margin-top: 1rem;
-      color: #00ffc8;
-      text-decoration: none;
-      border: 1px solid #00ffc8;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      transition: 0.3s;
+    #modalBox{
+      background:rgba(18,24,41,0.8);
+      padding:2rem 2.5rem;
+      border-radius:12px;
+      text-align:center;
+      box-shadow:0 0 30px rgba(0,0,0,0.7);
+      width:300px;
+      animation:fadeInModal 0.3s ease;
+      position:relative;
     }
-
-    .vault a:hover {
-      background: #00ffc8;
-      color: #000;
+    #modalBox h3{
+      color:#fff;
+      font-size:1.2rem;
+      margin-bottom:0.5rem;
     }
-
-    .vault.show {
-      transform: rotateY(0deg);
-      opacity: 1;
-      animation: fadeInUp 1.2s ease forwards, themeShift 3s infinite alternate ease-in-out;
+    #modalBox p{
+      color:#aaa;
+      font-size:0.9rem;
+      margin-bottom:1rem;
     }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    #closeModal{
+      position:absolute;
+      top:8px;right:8px;
+      background:none;
+      border:none;
+      font-size:1.2rem;
+      color:#ccc;
+      cursor:pointer;
+      transition:0.2s;
     }
-
-    @keyframes themeShift {
-      0%   { background: rgba(255, 255, 255, 0.05); }
-      25%  { background: rgba(0, 255, 200, 0.07); }
-      50%  { background: rgba(255, 255, 255, 0.1); }
-      75%  { background: rgba(0, 200, 255, 0.08); }
-      100% { background: rgba(255, 255, 255, 0.05); }
+    #closeModal:hover{color:#fff;}
+    @keyframes fadeInModal{
+      from{opacity:0;transform:scale(0.9);}
+      to{opacity:1;transform:scale(1);}
     }
   </style>
 </head>
 <body>
-  <div class="header">🧊 Project Vault</div>
-  <div class="vault-container">
-    <div class="vault" id="vault1">
-      <h2>Portfolio</h2>
-      <p>My main cyber-themed personal portfolio site built with elegance and glitch precision.</p>
-      <a href="https://anurvg.github.io/ten.io" target="_blank">Visit Portfolio</a>
+  <div id="progress-bar"></div>
+
+  <nav>
+    <div class="logo">The Sandbox <span class="version">v5</span></div>
+    <ul>
+      <li><a href="https://anurvg.github.io/feedback.github.io/" target="_blank">Feedback</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <h1 id="hero-title">Explore My Digital Sandbox</h1>
+    <p id="hero-text">Click the cards to flip and see project links.</p>
+  </section>
+
+  <section class="vault-container">
+    <div class="vault">
+      <div class="vault-inner">
+        <div class="vault-front">
+          <strong>Portfolio</strong>
+          My main cyber-themed personal portfolio site built with elegance and glitch precision.
+        </div>
+        <div class="vault-back">
+          <h2>Portfolio</h2>
+          <a href="https://anurvg.github.io/ten.io" target="_blank">Visit</a>
+        </div>
+      </div>
     </div>
 
-    <div class="vault" id="vault2">
-      <h2>Minecraft Themed</h2>
-      <p>A website styled with pixelated aesthetics, inspired by the blocky universe of Minecraft.</p>
-      <a href="https://anurvg.github.io/anuragverse" target="_blank">Visit AnuragVerse</a>
+    <div class="vault">
+      <div class="vault-inner">
+        <div class="vault-front">
+          <strong>Minecraft Themed</strong>
+          A website styled with pixelated aesthetics, inspired by the blocky universe of Minecraft.
+        </div>
+        <div class="vault-back">
+          <h2>Minecraft Themed</h2>
+          <a href="https://anurvg.github.io/anuragverse" target="_blank">Visit</a>
+        </div>
+      </div>
     </div>
 
-    <div class="vault" id="vault3">
-      <h2>Game Project</h2>
-      <p>Crafted for chaos and fun — an unpredictable website with surprise elements.</p>
-      <a href="https://anurvg.github.io/gdproject" target="_blank">Visit Troll</a>
+    <div class="vault">
+      <div class="vault-inner">
+        <div class="vault-front">
+          <strong>Game Project</strong>
+          Crafted for chaos and fun — an unpredictable website with surprise elements.
+        </div>
+        <div class="vault-back">
+          <h2>Game Project</h2>
+          <a href="https://anurvg.github.io/gdproject" target="_blank">Visit</a>
+        </div>
+      </div>
     </div>
 
-    <div class="vault" id="vault4">
-      <h2>Demo Project</h2>
-      <p>A basic but clean demo of design structure and minimal aesthetics.</p>
-      <a href="https://anurvg.github.io/demo0" target="_blank">Visit Demo</a>
+    <div class="vault">
+      <div class="vault-inner">
+        <div class="vault-front">
+          <strong>Demo Project</strong>
+          A basic but clean demo of design structure and minimal aesthetics.
+        </div>
+        <div class="vault-back">
+          <h2>Demo Project</h2>
+          <a href="https://anurvg.github.io/demo0" target="_blank">Visit</a>
+        </div>
+      </div>
     </div>
 
-    <div class="vault" id="vault5">
-      <h2>Random Website</h2>
-      <p>Experimental UI/UX playground. Random thoughts converted into digital design.</p>
-      <a href="https://anurvg.github.io/anrg" target="_blank">Visit Random</a>
+    <div class="vault">
+      <div class="vault-inner">
+        <div class="vault-front">
+          <strong>Random Website</strong>
+          Experimental UI/UX playground. Random thoughts converted into digital design.
+        </div>
+        <div class="vault-back">
+          <h2>Random Website</h2>
+          <a href="https://anurvg.github.io/anrg" target="_blank">Visit</a>
+        </div>
+      </div>
     </div>
 
-    <div class="vault" id="vault6">
-      <h2>काग़ज़ khaab</h2>
-      <p>My poetry collection folder "काग़ज़ khaab: खुद se baatain" presented online with aesthetic intimacy.</p>
-      <a href="https://anurvg.github.io/kaagaz" target="_blank">Visit Kaagaz</a>
+    <div class="vault">
+      <div class="vault-inner">
+        <div class="vault-front">
+          <strong>काग़ज़ khaab</strong>
+          My poetry collection "काग़ज़ khaab: खुद se baatain" presented online with aesthetic intimacy.
+        </div>
+        <div class="vault-back">
+          <h2>काग़ज़ khaab</h2>
+          <a href="https://anurvg.github.io/kaagaz" target="_blank">Visit</a>
+        </div>
+      </div>
     </div>
 
-    <div class="vault" id="vault7">
-      <h2>BroTalk</h2>
-      <p>My future startup aiming to build strong emotional connections through tech & talk.</p>
-      <a href="https://anurvg.github.io/brotalk" target="_blank">Visit BroTalk</a>
+    <div class="vault">
+      <div class="vault-inner">
+        <div class="vault-front">
+          <strong>BroTalk</strong>
+          My future startup aiming to build strong emotional connections through tech & talk.
+        </div>
+        <div class="vault-back">
+          <h2>BroTalk</h2>
+          <a href="#" id="brotalkBtn">Visit</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <button id="backTop">↑</button>
+
+  <footer>© 2025 Anurag – The Sandbox v5. All rights reserved.</footer>
+
+  <div id="modalOverlay">
+    <div id="modalBox">
+      <button id="closeModal">&times;</button>
+      <h3>Website Under Development</h3>
+      <p>BroTalk is coming soon. Stay tuned!</p>
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script>
-    const vaults = document.querySelectorAll('.vault');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('show');
-          }, i * 300);
-        }
-      });
-    }, {
-      threshold: 0.2
+    gsap.to("#hero-title", {opacity:1, y:0, duration:1, delay:0.3});
+    gsap.to("#hero-text", {opacity:1, y:0, duration:1, delay:0.6});
+
+    window.addEventListener("scroll",()=>{
+      const scrollTop=document.documentElement.scrollTop;
+      const height=document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progress=(scrollTop/height)*100;
+      document.getElementById("progress-bar").style.width=progress+"%";
+      document.getElementById("backTop").style.display=scrollTop>300?"block":"none";
+    });
+    document.getElementById("backTop").addEventListener("click",()=>{
+      window.scrollTo({top:0,behavior:"smooth"});
     });
 
-    vaults.forEach(vault => observer.observe(vault));
+    const vaults=document.querySelectorAll(".vault");
+    vaults.forEach(vault=>{
+      vault.addEventListener("click",()=>{
+        vaults.forEach(v=>{if(v!==vault){v.classList.remove("flipped");}});
+        vault.classList.toggle("flipped");
+      });
+    });
+    document.addEventListener("click",(e)=>{
+      if(!e.target.closest(".vault")){
+        vaults.forEach(v=>v.classList.remove("flipped"));
+      }
+    });
+
+    const modalOverlay=document.getElementById("modalOverlay");
+    document.getElementById("brotalkBtn").addEventListener("click",(e)=>{
+      e.preventDefault();
+      modalOverlay.style.display="flex";
+    });
+    document.getElementById("closeModal").addEventListener("click",()=>{
+      modalOverlay.style.display="none";
+    });
+    modalOverlay.addEventListener("click",(e)=>{
+      if(e.target===modalOverlay) modalOverlay.style.display="none";
+    });
   </script>
 </body>
 </html>
